@@ -2,8 +2,11 @@ package com.wang.controller;
 
 import com.wang.entities.CommonResult;
 import com.wang.entities.Payment;
+import com.wang.lb.LoadBalancer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import javax.swing.text.html.parser.Entity;
+import java.net.URI;
+import java.util.List;
 
 /**
  * @author wzm
@@ -24,6 +29,11 @@ public class OrderController {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private LoadBalancer loadBalancer;
+
+    @Autowired
+    private DiscoveryClient discoveryClient;
 
     //public static final String PAYMENT_SRV = "http://localhost:8001";
 
@@ -58,5 +68,20 @@ public class OrderController {
         }else {
             return new CommonResult(50001,"操作失败");
         }
+    }
+
+    /**
+     * 自建ribbon轮询算法
+     * @return
+     */
+    @GetMapping(value = "/consumer/payment/lb")
+    public String getPaymentLB(){
+        List<ServiceInstance> instances = discoveryClient.getInstances("CLOUD-PAYMENT-SERVICE");
+        if (instances == null || instances.size() <= 0){
+            return null;
+        }
+        ServiceInstance serviceInstance = loadBalancer.instances(instances);
+        URI uri = serviceInstance.getUri();
+        return restTemplate.getForObject(uri + "/payment/lb",String.class);
     }
 }
