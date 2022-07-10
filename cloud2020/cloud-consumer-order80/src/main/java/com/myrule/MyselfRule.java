@@ -6,6 +6,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
+ *
+ * 轮询源码剖析:RandomRule实现IRule接口
+ *      先将初始值用AtomicInteger来保证数字计算的时候的线程安全(先设置为0)
+ *      choose()->选择时，先看活着的服务和总服务数是否为0
+ *      incrementAndGetModulo()自旋锁
+ *      来计算获取到的值是否与我们期望的值相同，若相同则返回(计算公式：当前值+1/总服务数)
+ *      最后根据获取到的下标返回要调用的服务
+ *
  * com.netflix.loadbalancer.RoundRobinRule 轮询
  * com.netflix.loadbalancer.RandomRule 随机
  * com.netflix.loadbalancer.RetryRule 先按照RoundRobinRule的策略获取服务，如果获取服务失败则在指定时间内会进行重试，获取可用的服务
