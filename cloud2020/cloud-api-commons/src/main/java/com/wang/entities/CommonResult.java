@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
+ * Feign是一个声明式的Web服务客户端，让编写Web服务客户端变得非常容易，
+ *      只需创建一个接口并在接口上添加注解即可
+ *
  * @author wzm
  * @since 2022/6/12
  */
