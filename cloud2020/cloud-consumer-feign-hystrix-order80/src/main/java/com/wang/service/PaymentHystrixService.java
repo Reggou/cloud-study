@@ -12,5 +12,5 @@ public interface PaymentHystrixService {
     public String paymentInfoOk(@PathVariable("id") Integer id);
 
     @GetMapping("/payment/hystrix/timeout/{id}")
-    public String paymentInfoNotOk(Integer id);
+    public String paymentInfoNotOk(@PathVariable("id") Integer id);
 }
