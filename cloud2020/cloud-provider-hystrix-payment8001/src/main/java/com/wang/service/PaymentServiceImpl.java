@@ -24,17 +24,17 @@ public class PaymentServiceImpl implements PaymentService{
 
     @HystrixCommand(fallbackMethod = "paymentInfoNotOkHandler",commandProperties = {
             //线程超时时间为3s
-            @HystrixProperty(name="execution.isolation.thread.timeoutInMilliseconds",value="3000")
+            @HystrixProperty(name="execution.isolation.thread.timeoutInMilliseconds",value="5000")
     })
     @Override
     public String paymentInfoNotOk(Integer id) {
 //        int i = 10/0;
         try {
-            TimeUnit.SECONDS.sleep(5);
+            TimeUnit.SECONDS.sleep(3);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return "线程池："+Thread.currentThread().getName()+",paymentInfoNotOk"+id+"\t"+"耗时5s";
+        return "线程池："+Thread.currentThread().getName()+",paymentInfoNotOk"+id+"\t"+"耗时3s";
     }
 
     /**
