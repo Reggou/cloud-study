@@ -1,5 +1,6 @@
 package com.wang.controller;
 
+import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.wang.service.PaymentHystrixService;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2022/7/17 23:39
  */
 @RestController
+@DefaultProperties(defaultFallback = "paymentGlobalFallbackMethod")
 public class OrderHystrixController {
     @Autowired
     private PaymentHystrixService paymentHystrixService;
@@ -24,9 +26,10 @@ public class OrderHystrixController {
         return result;
     }
 
-    @HystrixCommand(fallbackMethod = "paymentTimeOutFallbackMethod",commandProperties = {
-            @HystrixProperty(name="execution.isolation.thread.timeoutInMilliseconds",value="1500")
-    })
+//    @HystrixCommand(fallbackMethod = "paymentTimeOutFallbackMethod",commandProperties = {
+//            @HystrixProperty(name="execution.isolation.thread.timeoutInMilliseconds",value="1500")
+//    })//指定的服务降级
+    @HystrixCommand//使用全局的服务降级
     @GetMapping("/consumer/payment/hystrix/timeout/{id}")
     public String paymentInfoNotOk(@PathVariable("id") Integer id) {
         int i = 10/0;
@@ -42,5 +45,10 @@ public class OrderHystrixController {
     public String paymentTimeOutFallbackMethod(@PathVariable("id") Integer id)
     {
         return "我是消费者80,对方支付系统繁忙请10秒钟后再试或者自己运行出错请检查自己,o(╥﹏╥)o";
+    }
+
+    //全局服务降级 global fallback
+    public String paymentGlobalFallbackMethod(){
+        return "Global异常处理信息，请稍后再试";
     }
 }
