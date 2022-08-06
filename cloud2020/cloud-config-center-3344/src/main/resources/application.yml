@@ -12,7 +12,6 @@ spring:
           ####搜索目录
           search-paths:
             - Springcloud-config
-          skip-ssl-validation: true
       ####读取分支
       label: main
 
@@ -20,4 +19,6 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:7001/eureka , http://localhost:7002/eurkea
+      register-with-eureka: true
+      fetch-registry: true
+      defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka
