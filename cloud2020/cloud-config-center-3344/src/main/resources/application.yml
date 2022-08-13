@@ -15,6 +15,15 @@ spring:
       ####读取分支
       label: main
 
+  #RabbitMq相关配置 spring.rabbitmq.host。。。。
+  #curl -X POST "http://localhost:3344/actuator/bus-refresh"
+  rabbitmq:
+    host:
+    port: 5672
+    username:
+    password:
+
+
 #服务注册到eureka地址
 eureka:
   client:
@@ -22,3 +31,10 @@ eureka:
       register-with-eureka: true
       fetch-registry: true
       defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka
+
+#rabbitmq相关配置,暴露bus刷新配置的端点
+management:
+  endpoints: #暴露bus刷新配置的端点
+    web:
+      exposure:
+        include: 'bus-refresh'

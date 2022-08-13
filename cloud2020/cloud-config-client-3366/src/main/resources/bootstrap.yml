@@ -9,6 +9,13 @@ spring:
       name: config #配置文件名称
       profile: dev #后缀名称
       uri: http://localhost:3344 #配置中心地址
+  #RabbitMq相关配置 spring.rabbitmq.host。。。。
+  #curl -X POST "http://localhost:3344/actuator/bus-refresh"
+  rabbitmq:
+    host:
+    port: 5672
+    username:
+    password:
 
 #服务注册到eureka地址
 eureka:
