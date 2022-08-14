@@ -16,7 +16,10 @@ spring:
       label: main
 
   #RabbitMq相关配置 spring.rabbitmq.host。。。。
-  #curl -X POST "http://localhost:3344/actuator/bus-refresh"
+  #刷新全部实例：curl -X POST "http://localhost:3344/actuator/bus-refresh"
+  #只刷新指定实例，公式：http://localhost:配置中心的端口号/actuator/bus-refresh/{destination}
+  #只刷新指定实例：curl -X POST "http://localhost:3344/actuator/bus-refresh/config-client:3355"
+  #config-client:3355 注册中心服务名:端口号
   rabbitmq:
     host:
     port: 5672
