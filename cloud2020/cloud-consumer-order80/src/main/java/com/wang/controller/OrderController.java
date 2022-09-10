@@ -40,48 +40,56 @@ public class OrderController {
     // 通过在eureka上注册过的微服务名称调用
     public static final String PAYMENT_SRV = "http://CLOUD-PAYMENT-SERVICE";
 
+    // ====================> zipkin+sleuth
+    @GetMapping("/consumer/payment/zipkin")
+    public String paymentZipkin() {
+        String result = restTemplate.getForObject("http://localhost:8001" + "/payment/zipkin/", String.class);
+        return result;
+    }
+
     @RequestMapping("/consumer/payment/create")
-    public CommonResult create(Payment payment){
+    public CommonResult create(Payment payment) {
         /**
          * 请求地址，请求参数，转换对象
          */
-        return restTemplate.postForObject(PAYMENT_SRV+"/payment/create"
-            ,payment
-            ,CommonResult.class);
+        return restTemplate.postForObject(PAYMENT_SRV + "/payment/create"
+                , payment
+                , CommonResult.class);
 
     }
 
     @GetMapping("/consumer/payment/get/{id}")
-    public CommonResult getPayment(@PathVariable("id") Long id){
-        return restTemplate.getForObject(PAYMENT_SRV+"/payment/get/"+id
-                ,CommonResult.class
+    public CommonResult getPayment(@PathVariable("id") Long id) {
+        return restTemplate.getForObject(PAYMENT_SRV + "/payment/get/" + id
+                , CommonResult.class
         );
     }
 
     @GetMapping("/consumer/payment/getForEntity/{id}")
-    public CommonResult getPayment2(@PathVariable("id") Long id){
-        ResponseEntity<CommonResult> entity = restTemplate.getForEntity(PAYMENT_SRV+"/payment/get/"+id
-                ,CommonResult.class
+    public CommonResult getPayment2(@PathVariable("id") Long id) {
+        ResponseEntity<CommonResult> entity = restTemplate.getForEntity(PAYMENT_SRV + "/payment/get/" + id
+                , CommonResult.class
         );
-        if (entity.getStatusCode().is2xxSuccessful()){
+        if (entity.getStatusCode().is2xxSuccessful()) {
             return entity.getBody();
-        }else {
-            return new CommonResult(50001,"操作失败");
+        } else {
+            return new CommonResult(50001, "操作失败");
         }
     }
 
     /**
      * 自建ribbon轮询算法
+     *
      * @return
      */
     @GetMapping(value = "/consumer/payment/lb")
-    public String getPaymentLB(){
+    public String getPaymentLB() {
         List<ServiceInstance> instances = discoveryClient.getInstances("CLOUD-PAYMENT-SERVICE");
-        if (instances == null || instances.size() <= 0){
+        if (instances == null || instances.size() <= 0) {
             return null;
         }
         ServiceInstance serviceInstance = loadBalancer.instances(instances);
         URI uri = serviceInstance.getUri();
-        return restTemplate.getForObject(uri + "/payment/lb",String.class);
+        return restTemplate.getForObject(uri + "/payment/lb", String.class);
     }
 }

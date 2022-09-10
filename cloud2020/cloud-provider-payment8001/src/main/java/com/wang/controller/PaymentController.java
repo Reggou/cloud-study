@@ -29,6 +29,12 @@ public class PaymentController {
     @Autowired
     private DiscoveryClient discoveryClient;
 
+    //sleuth
+    @GetMapping("/payment/zipkin")
+    public String paymentZipkin() {
+        return "hi ,i'am paymentzipkin server fall back，welcome to atguigu，O(∩_∩)O哈哈~";
+    }
+
     @RequestMapping("/payment/create")
     public CommonResult createPayment(@RequestBody Payment payment) {
         int result = paymentService.createPayment(payment);
@@ -74,11 +80,11 @@ public class PaymentController {
     }
 
     @GetMapping(value = "/payment/feign/timeout")
-    public CommonResult<String> paymentFeignTimeOut(){
+    public CommonResult<String> paymentFeignTimeOut() {
         //暂停几秒钟线程
-        try{
+        try {
             TimeUnit.SECONDS.sleep(3);
-            return new CommonResult<>(200,"success",serverPort);
+            return new CommonResult<>(200, "success", serverPort);
         } catch (InterruptedException e) {
             return new CommonResult(50001, e.getMessage());
         }
