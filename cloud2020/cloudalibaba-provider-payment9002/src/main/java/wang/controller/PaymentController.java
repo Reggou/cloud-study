@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class PaymentController {
-    @Value("${server.port")
+    @Value("${server.port}")
     private String serverPort;
 
     @GetMapping(value = "/payment/nacos/{id}")
