@@ -57,13 +57,13 @@
   <!-- 子模块继承之后，提供作用：锁定版本+子modlue不用写groupId和version  -->
   <dependencyManagement>
     <dependencies>
-<!--      <dependency>-->
-<!--        <groupId>com.alibaba.cloud</groupId>-->
-<!--        <artifactId>spring-cloud-alibaba-dependencies</artifactId>-->
-<!--        <version>2021.0.1.0</version>-->
-<!--        <type>pom</type>-->
-<!--        <scope>import</scope>-->
-<!--      </dependency>-->
+      <dependency>
+        <groupId>com.alibaba.cloud</groupId>
+        <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+        <version>2021.0.1.0</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
       <!--spring boot 2.2.2-->
       <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -81,13 +81,13 @@
         <scope>import</scope>
       </dependency>
       <!--spring cloud alibaba 2.1.0.RELEASE-->
-      <dependency>
-        <groupId>com.alibaba.cloud</groupId>
-        <artifactId>spring-cloud-alibaba-dependencies</artifactId>
-        <version>2.1.0.RELEASE</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
+<!--      <dependency>-->
+<!--        <groupId>com.alibaba.cloud</groupId>-->
+<!--        <artifactId>spring-cloud-alibaba-dependencies</artifactId>-->
+<!--        <version>2.1.0.RELEASE</version>-->
+<!--        <type>pom</type>-->
+<!--        <scope>import</scope>-->
+<!--      </dependency>-->
       <dependency>
         <groupId>mysql</groupId>
         <artifactId>mysql-connector-java</artifactId>
